@@ -6,26 +6,55 @@ client.login(process.env.BOT_TOKEN);
 client.on('ready', () => console.log(`${client.user.tag} has logged in.`));
 
 client.on('message', async message => {
-    if(message.author.bot) return;
-    if(message.content.toLowerCase() === '!verify' && message.channel.id === '827931623596490782')
-    {
 
-        const role = message.guild.roles.cache.get('827945071739535380');
-        if(role) {
-            console.log("Entrou");
-            try{
+    // if it is a bot message, doesn't do nothing. '
+
+    if(message.author.bot) return;
+    
+    // check if user is on correct channel
+
+    if(message.channel.id === '827931623596490782')
+    {
+        // check if user says !verify in correct channel
+
+        if(message.content.toLowerCase() === '!verify'){
+
+            const role = message.guild.roles.cache.get('827945071739535380');
+
+            if(role) {
+                try{    
+                    await message.member.roles.add(role);
+                    console.log("Role added to: " + message.member);
+                    await message.delete();
+                }
+                catch (err){
+                    console.log(err);
+                }
                 
-                await message.member.roles.add(role);
-                console.log("Role added!");
-                await message.delete();
             }
-            catch (err){
-                console.log(err);
-            }
+
+        }else{
+
+            // Delete wrong message.
+
+            console.log(message.member + " said: " + " '" + message.content + "' " + " on verify chat");
+            await message.delete();
             
         }
-    }
+        
+    }else{
 
+        // Just can say !verify on correct channel
+
+        if(message.content.toLowerCase() === '!verify'){
+
+            console.log("Wrong Channel")
+            await message.delete();
+            
+        }
+        
+
+    }
     
     
 });
