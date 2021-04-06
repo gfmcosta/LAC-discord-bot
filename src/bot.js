@@ -2,6 +2,7 @@ require('dotenv').config();
 const { Client } = require('discord.js');
 const client = new Client();
 client.login(process.env.BOT_TOKEN);
+const prefix = ("!")
 
 client.on('ready', () => console.log(`${client.user.tag} has logged in.`));
 
@@ -17,7 +18,7 @@ client.on('message', async message => {
     {
         // check if user says !verify in correct channel
 
-        if(message.content.toLowerCase() === '!verify'){
+        if(message.content.toLowerCase() === prefix + 'verify'){
 
             const role = message.guild.roles.cache.get('827945071739535380');
 
@@ -46,13 +47,41 @@ client.on('message', async message => {
 
         // Just can say !verify on correct channel
 
-        if(message.content.toLowerCase() === '!verify'){
+        if(message.content.toLowerCase() === prefix + 'verify'){
 
             console.log("Wrong Channel")
             await message.delete();
             
+        }   
+
+        if(message.author.id === '490296006810796044' || message.author.id === '284765275507785728'){
+
+            if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+            
+            const args = message.content.slice(prefix.length).trim().split(' ');
+            const command = args.shift().toLowerCase();
+
+            if (command === 'communicate') {
+
+                await message.delete();
+
+                
+                
+
+                message.guild.channels.forEach(channel => {message.channel.send("```Owner says: " + args + " ```")})
+
+                if (!args.length) {
+                    return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+                }
+            
+            
+               
+            
+            }
+
+
         }
-        
 
     }
     
